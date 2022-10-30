@@ -1,0 +1,37 @@
+#http://localhost:8761/eureka/
+# Spring Settings
+spring:
+  application:
+    # eureka-client
+    name: ${REGISTRY_CLIENT_NAME:eureka-client}
+  cloud:
+    config:
+      enabled: false
+
+#cloud:
+#  config:
+#    label: ${spring.profiles.active}
+#    discovery:
+#      enabled: true
+
+# Server Settings
+server:
+  port: ${REGISTRY_CLIENT_PORT:8162}
+
+registry:
+  service:
+    port: ${REGISTRY_SERVICE_PORT:8761}
+
+## Eureka Settings
+eureka:
+  instance:
+    hostname: ${REGISTRY_CLIENT_HOSTNAME:localhost}
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceU-url:
+      defaultZone: ${REGISTRY_SERVER_URL:http://${eureka.instance.hostname}:${registry.service.port}/eureka/}
+#    healthcheck:
+#      enabled: true
+
+# Log Settings

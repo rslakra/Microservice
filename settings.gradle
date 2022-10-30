@@ -1,0 +1,5 @@
+rootProject.name = 'SpringMicroservices'
+include 'eureka-service'
+include 'eureka-client'
+include 'config-service'
+include 'config-client'

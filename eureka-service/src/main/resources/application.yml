@@ -1,0 +1,58 @@
+#http://localhost:8761/eureka/
+#Spring Settings
+spring:
+  application:
+    # eureka-service
+    name: ${REGISTRY_SERVICE_NAME:eureka-service}
+  cloud:
+    config:
+      enabled: false
+
+# Server Settings
+server:
+  port: ${REGISTRY_SERVICE_PORT:8761}
+
+# Eureka Settings
+eureka:
+  instance:
+    hostname: ${REGISTRY_SERVICE_HOSTNAME:localhost}
+    # only for local development. remove this setting in production and thus default to 30 seconds.
+    leaseRenewalIntervalInSeconds: 2
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceU-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+# Log Settings
+
+---
+
+config:
+  activate:
+    on-profile: ${ACTIVE_PROFILE_NAME:cloud}
+
+eureka:
+  instance:
+    ## set the host name explicitly when in Cloud Foundry.
+    hostname: ${REGISTRY_SERVICE_HOSTNAME:localhost}
+    # make sure in the cloud we use proper default values.
+    leaseRenewalIntervalInSeconds: 30
+    ## This information will be part of the InstanceInfo returned by DiscoveryClient / EurekaClient.
+    ## Unfortunately, these have to be specified explicitly, since Eureka creates these URLs wrongly
+    ## when running on CF.
+    ## See: https://cloud.spring.io/spring-cloud-netflix/multi/multi__service_discovery_eureka_clients.html
+    #${REGISTRY_SERVICE_HOMEPAGE_URL:http://${eureka:instance:hostname}:${server:port}/eureka/}
+    homePageUrl: https://${eureka.instance.hostname}/
+    statusPageUrl: https://${eureka.instance.hostname}/actuator/info
+    healthCheckUrl: https://${eureka.instance.hostname}/actuator/health
+    secureHealthCheckUrl: https://${eureka.instance.hostname}/actuator/health
+    nonSecurePortEnabled: false
+    securePortEnabled: true
+    securePort: 443
+    metadata-map:
+      # Adding information about the application GUID and app instance index to
+      # each instance metadata. This could be used for setting the X-CF-APP-INSTANCE header
+      # to instruct Go-Router where to route.
+      cfAppGuid: ${REGISTRY_SERVICE_HOSTNAME:localhost}
+      cfInstanceIndex: ${INSTANCE_INDEX}
