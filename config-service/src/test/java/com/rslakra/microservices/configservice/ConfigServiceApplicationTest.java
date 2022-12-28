@@ -16,23 +16,60 @@
 
 package com.rslakra.microservices.configservice;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.rslakra.microservices.configservice.utils.PathUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.config.server.environment.EnvironmentController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = ConfigServiceApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 //@RunWith(SpringRunner.class)
-@SpringBootTest(properties = { "spring.profiles.active=native" })
+//@SpringBootTest(properties = { "spring.profiles.active=native" })
 public class ConfigServiceApplicationTest {
 
     @Autowired
-    private EnvironmentController controller;
+    private EnvironmentController envController;
+
+    @Value("${local.server.port}")
+    private int port = 0;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
 
     @Test
     public void contextLoads() {
-        assertThat(controller).isNotNull();
+        assertThat(envController).isNotNull();
+    }
+
+
+    @Test
+    public void configurationAvailable() {
+        String serverUrl = PathUtils.pathString(port, "app/cloud");
+        @SuppressWarnings("rawtypes")
+        ResponseEntity<Map> entity = restTemplate.getForEntity(serverUrl, Map.class);
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+    }
+
+    @Test
+    public void envPostAvailable() {
+        String serverUrl = PathUtils.pathString(port, "admin/env");
+        @SuppressWarnings("rawtypes")
+        ResponseEntity<Map> entity = restTemplate.getForEntity(serverUrl, Map.class);
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
 
 }
