@@ -73,10 +73,10 @@ TEST*.xml
 
 # Large Files
 /**/*.mp4
-*.tiff
+/**/*.tiff
 /**/*.avi
-*.flv
-*.mov
-*.wmv
+/**/*.flv
+/**/*.mov
+/**/*.wmv
 /**/*.jar
 /**/*.exe

@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group 'com.rslakra.microservices.eurekaservice'
+group 'com.rslakra.microservice.eurekaservice'
 version '1.0-SNAPSHOT'
 sourceCompatibility = '11'
 

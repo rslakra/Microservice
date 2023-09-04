@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.rslakra.microservices</groupId>
+    <groupId>com.rslakra.microservice</groupId>
     <artifactId>eureka-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>

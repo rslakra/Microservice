@@ -161,3 +161,7 @@ The following guides may also be helpful:
 * [Creating a Multi Module Project](https://spring.io/guides/gs/multi-module/)
 
 - [footer](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/footer.adoc)
+
+## Reference
+
+*  [university-event-driven-architecture-for-java-developers-app-exercises](https://github.com/cockroachdb/university-event-driven-architecture-for-java-developers-app-exercises)
