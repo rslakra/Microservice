@@ -1,0 +1,10 @@
+#----------------< Spring Configuration >----------------
+spring:
+  #----------------< Jackson Settings >----------------
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+    #The bean 'jpaAuditingHandler', defined in null, could not be registered.
+    # A bean with that name has already been defined in null and overriding is disabled.
+  #  main:
+  #    allow-bean-definition-overriding: true
