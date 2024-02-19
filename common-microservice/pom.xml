@@ -38,8 +38,8 @@
         <code-styles.dir>${project.basedir}/../../code-styles</code-styles.dir>
         <checkstyle.threshold>0</checkstyle.threshold>
 
-        <appsuite-framework-core.version>0.0.13</appsuite-framework-core.version>
-        <appsuite-framework-spring.version>0.0.14</appsuite-framework-spring.version>
+        <appsuite-core.version>0.0.26</appsuite-core.version>
+        <appsuite-spring.version>0.0.11</appsuite-spring.version>
 
         <!-- lombok -->
         <lombok.version>1.18.26</lombok.version>
@@ -62,7 +62,7 @@
 
         <model.mapper.version>2.3.0</model.mapper.version>
         <hibernate.types.version>2.10.1</hibernate.types.version>
-        <json.version>20230618</json.version>
+        <json.version>20240205</json.version>
         <javx.xml.bind.version>2.3.0</javx.xml.bind.version>
         <mockito.all.version>2.0.2-beta</mockito.all.version>
         <junit.version>5.7.0</junit.version>
@@ -74,15 +74,15 @@
 
         <!-- appsuite-framework-modules -->
         <dependency>
-            <groupId>com.rslakra.frameworks</groupId>
-            <artifactId>appsuite-framework-core</artifactId>
-            <version>${appsuite-framework-core.version}</version>
+            <groupId>com.devamatre.appsuite</groupId>
+            <artifactId>appsuite-core</artifactId>
+            <version>${appsuite-core.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.rslakra.frameworks</groupId>
-            <artifactId>appsuite-framework-spring</artifactId>
-            <version>${appsuite-framework-spring.version}</version>
+            <groupId>com.devamatre.appsuite</groupId>
+            <artifactId>appsuite-spring</artifactId>
+            <version>${appsuite-spring.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
