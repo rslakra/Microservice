@@ -72,7 +72,7 @@
         <hibernate.types.version>2.10.1</hibernate.types.version>
         <!-- json -->
         <model.mapper.version>2.3.0</model.mapper.version>
-        <json.version>20230618</json.version>
+        <json.version>20240205</json.version>
         <!-- xml.bind -->
         <javx.xml.bind.version>2.3.0</javx.xml.bind.version>
         <!-- geodesy -->
