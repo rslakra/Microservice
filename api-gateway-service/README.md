@@ -42,4 +42,4 @@ http://localhost:8161/actuator/health
 
 # Author
 
-- Rohtash Singh Lakra
+- Rohtash Lakra
