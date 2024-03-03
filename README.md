@@ -8,7 +8,7 @@ You'll set-up a [Config Server](http://cloud.spring.io/spring-cloud-config/sprin
 
 ## What you'll need
 
-- java_version: 1.8
+- java_version: 11
 - [prereq_editor_jdk_buildtools](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc)
 - [how_to_complete_this_guide](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc)
 
@@ -165,3 +165,4 @@ The following guides may also be helpful:
 ## Reference
 
 *  [university-event-driven-architecture-for-java-developers-app-exercises](https://github.com/cockroachdb/university-event-driven-architecture-for-java-developers-app-exercises)
+*  [Spring Cloud Config](https://docs.spring.io/spring-cloud-config/docs/current/reference/html)

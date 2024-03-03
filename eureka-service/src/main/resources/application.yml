@@ -1,30 +1,35 @@
-#http://localhost:8761/eureka/
+# http://localhost:8761/eureka/
 #Spring Settings
 spring:
   application:
     # eureka-service
-    name: ${REGISTRY_SERVICE_NAME:eureka-service}
-  cloud:
-    config:
-      enabled: false
+    name: ${EUREKA_SERVICE_NAME:eureka-service}
 
 # Server Settings
-server:
-  port: ${REGISTRY_SERVICE_PORT:8761}
-
+# The default port which eureka naming server
 # Eureka Settings
 eureka:
   instance:
-    hostname: ${REGISTRY_SERVICE_HOSTNAME:localhost}
+    hostname: ${EUREKA_SERVICE_HOSTNAME:localhost}
     # only for local development. remove this setting in production and thus default to 30 seconds.
     leaseRenewalIntervalInSeconds: 2
+    preferIpAddress: false
+
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+
   client:
     register-with-eureka: false
     fetch-registry: false
-    serviceU-url:
+    #    registerWithEureka: false
+    #    fetchRegistry: false
+    service-url:
+      # In the preceding example, "defaultZone" is a magic string fallback value that provides the service URL for
+      # any client that does not express a preference (in other words, it is a useful default).
+      # where defaultZone should hold the value of your Eureka/Registry Service.
+      # end point of load balancing server (registry service)
+      # defaultZone: http://admin:pwd@${eureka.instance.hostname}:${server.port}/eureka/
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-
-# Log Settings
 
 ---
 
@@ -35,7 +40,7 @@ config:
 eureka:
   instance:
     ## set the host name explicitly when in Cloud Foundry.
-    hostname: ${REGISTRY_SERVICE_HOSTNAME:localhost}
+    hostname: ${EUREKA_SERVICE_HOSTNAME:localhost}
     # make sure in the cloud we use proper default values.
     leaseRenewalIntervalInSeconds: 30
     ## This information will be part of the InstanceInfo returned by DiscoveryClient / EurekaClient.
@@ -54,5 +59,5 @@ eureka:
       # Adding information about the application GUID and app instance index to
       # each instance metadata. This could be used for setting the X-CF-APP-INSTANCE header
       # to instruct Go-Router where to route.
-      cfAppGuid: ${REGISTRY_SERVICE_HOSTNAME:localhost}
+      cfAppGuid: ${EUREKA_SERVICE_HOSTNAME:localhost}
       cfInstanceIndex: ${INSTANCE_INDEX}

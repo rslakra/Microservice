@@ -1,4 +1,4 @@
-rootProject.name = 'SpringMicroservices'
+rootProject.name = 'Microservice'
 include 'eureka-service'
 include 'eureka-client'
 include 'config-service'

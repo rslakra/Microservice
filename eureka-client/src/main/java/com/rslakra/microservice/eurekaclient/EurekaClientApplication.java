@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * A client that both registers itself with the registry and uses the Spring Cloud DiscoveryClient abstraction to
  * interrogate the registry for its own host and port.
+ * <code>@EnableDiscoveryClient</code> named annotation used to register the application with Eureka server in the main
+ * class.
  *
  * @author Rohtash Lakra
  * @created 1/21/21 3:21 PM
