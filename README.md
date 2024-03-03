@@ -165,4 +165,4 @@ The following guides may also be helpful:
 ## Reference
 
 *  [university-event-driven-architecture-for-java-developers-app-exercises](https://github.com/cockroachdb/university-event-driven-architecture-for-java-developers-app-exercises)
-*  [Spring Cloud Config](https://docs.spring.io/spring-cloud-config/docs/current/reference/html)
+* [Spring Cloud Config](https://docs.spring.io/spring-cloud-config/docs/current/reference/html)
