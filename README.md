@@ -30,13 +30,13 @@ the [Spring Cloud Config Server](http://cloud.spring.io/spring-cloud-config/spri
 
 ## What you'll build
 
-You'll set-up a [Config Server](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) and then build a
+You'll setup a [Config Server](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) and then build a
 client that consumes the configuration on startup and then ```_refreshes_``` the configuration without restarting the
 client.
 
 ## What you'll need
 
-- java_version: 11
+- java_version: 21
 - [prereq_editor_jdk_buildtools](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc)
 - [how_to_complete_this_guide](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc)
 
@@ -255,7 +255,7 @@ The following guides may also be helpful:
 
 What things you need to install the software and how to install them
 
-Check if you already have java or not. If not, install java ``11`` version.
+Check if you already have java or not. If not, install java ``21`` version.
 
 ```
 java -version
@@ -310,9 +310,9 @@ The following URLs will help you to download and install the required software.
 Please follow the instructions and download the latest stable version, as
 supported by your OS version.
 
-* [Open JDK 11](https://openjdk.org/projects/jdk/11/) - Open JDK 11 Development Kit
-* [Brew JDK 11](https://formulae.brew.sh/formula/openjdk@11) - Brew Formula Open JDK 11 Development Kit
-* [Oracle JDK 11](https://www.oracle.com/java/technologies/downloads/#java11-mac) - Oracle JDK 11 Development Kit
+* [Open JDK 21](https://openjdk.org/projects/jdk/21/) - Open JDK 21 Development Kit
+* [Brew JDK 21](https://formulae.brew.sh/formula/openjdk@21) - Brew Formula Open JDK 21 Development Kit
+* [Oracle JDK 21](https://www.oracle.com/java/technologies/downloads/#java21-mac) - Oracle JDK 11 Development Kit
 * [Maven](https://maven.apache.org/download.cgi) - Apache Maven
 * [IntelliJ IDEA](https://www.jetbrains.com/idea/download/#section=mac) - Download IntelliJ IDEA
 * [Eclipse](https://www.eclipse.org/downloads/) - Eclipse IDE 2019‑09

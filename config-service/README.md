@@ -8,7 +8,7 @@ You'll set-up a [Config Server](http://cloud.spring.io/spring-cloud-config/sprin
 
 ## What you'll need
 
-- java_version: 11
+- java_version: 21
 - [prereq_editor_jdk_buildtools](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc)
 - [how_to_complete_this_guide](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc)
 

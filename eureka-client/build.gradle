@@ -6,7 +6,7 @@ plugins {
 
 group 'com.rslakra.microservices.eurekaclient'
 version '1.0-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '21'
 
 repositories {
     mavenCentral()
