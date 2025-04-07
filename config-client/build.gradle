@@ -20,8 +20,8 @@ bootJar {
     baseName = 'config-client'
     version = '0.0.1-SNAPSHOT'
 }
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 21
+targetCompatibility = 21
 
 repositories {
     mavenCentral()

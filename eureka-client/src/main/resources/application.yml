@@ -1,12 +1,32 @@
-#http://localhost:8761/eureka/
-# Spring Settings
+# Log Settings
+logging:
+  level:
+    org:
+      hibernate: WARN
+      springframework:
+        cloud: INFO
+        security: INFO
+        boot:
+          web: INFO
+      apache: WARN
+      # catalina: WARN
+    com:
+      zaxxer: WARN
+      netflix: WARN
+      # discovery: WARN
+      # eureka: WARN
+      devamatre: DEBUG
+
+
+# Eureka Client Settings
+server:
+  port: ${EUREKA_CLIENT_PORT:8416}
+
+#Spring Settings
 spring:
   application:
-    # eureka-client
-    name: ${REGISTRY_CLIENT_NAME:eureka-client}
-  cloud:
-    config:
-      enabled: false
+    # registry-client
+    name: ${EUREKA_CLIENT_NAME:eureka-client}
 
 #cloud:
 #  config:
@@ -14,24 +34,23 @@ spring:
 #    discovery:
 #      enabled: true
 
-# Server Settings
-server:
-  port: ${REGISTRY_CLIENT_PORT:8162}
-
+# http://localhost:8316/eureka/
+# Eureka/Registry Service Settings
 registry:
   service:
-    port: ${REGISTRY_SERVICE_PORT:8761}
+    port: ${EUREKA_SERVICE_PORT:8316}
 
 ## Eureka Settings
 eureka:
   instance:
-    hostname: ${REGISTRY_CLIENT_HOSTNAME:localhost}
+    hostname: ${EUREKA_CLIENT_HOSTNAME:localhost}
   client:
-    register-with-eureka: false
-    fetch-registry: false
-    serviceU-url:
-      defaultZone: ${REGISTRY_SERVER_URL:http://${eureka.instance.hostname}:${registry.service.port}/eureka/}
+    #    register-with-eureka: false
+    #    fetch-registry: false
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      # where defaultZone should hold the value of your Eureka/Registry Service.
+      defaultZone: ${REGISTRY_SERVICE_URL:http://${eureka.instance.hostname}:${registry.service.port}/eureka/}
 #    healthcheck:
 #      enabled: true
-
-# Log Settings

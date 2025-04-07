@@ -1,0 +1,35 @@
+# Log Settings
+logging:
+  level:
+    org:
+      hibernate: WARN
+      springframework: WARN
+      apache: WARN
+    com:
+      zaxxer: WARN
+      netflix: WARN
+      rslakra: DEBUG
+
+management:
+  security:
+    enabled: false
+  # demonstrate dynamic configuration changes
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# Spring Settings
+spring:
+  # Add a spring.config.import=configserver: property to your configuration.
+  #	If configuration is not required add spring.config.import=optional:configserver: instead.
+  # To disable this check, set spring.cloud.config.enabled=false or
+  # spring.cloud.config.import-check.enabled=false.
+  # The Config Server needs to know which repository to manage
+  cloud:
+    config:
+      enabled: false
+
+## Config Client Message Settings
+message: Hello, Config Client Test!
+
