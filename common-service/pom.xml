@@ -65,8 +65,8 @@
         <opencsv.version>5.7.0</opencsv.version>
 
         <!-- excel-parser -->
-        <poi.version>5.2.3</poi.version>
-        <poi-ooxml.version>5.2.3</poi-ooxml.version>
+        <poi.version>5.4.1</poi.version>
+        <poi-ooxml.version>5.4.1</poi-ooxml.version>
 
         <!-- hibernate.types -->
         <hibernate.types.version>2.10.1</hibernate.types.version>
