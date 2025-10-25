@@ -97,10 +97,9 @@ version-controlled repository of configuration files. You can use Spring Cloud's
 config server that other applications can talk to. This is a regular Spring Boot application with one annotation added
 to _enable_ the config server.
 
-`config-service/src/main/java/com/rslakra/microservices/configservice/ConfigServiceApplication.java`
 ----
 
-- [ConfigServiceApplication](config-service/src/main/java/com/rslakra/microservices/configservice/ConfigServiceApplication.java)
+- [ConfigServiceApplication](config-service/src/main/java/com/rslakra/microservice/configservice/ConfigServiceApplication.java)
 
 ----
 
@@ -134,6 +133,10 @@ another Spring Boot application on the same machine.
 
 In this example we are using a file-based git repository at `${HOME}/Downloads/AppData/ConfigService`.
 You can create one easily by making a new directory and git committing properties and YAML files to it.
+
+OR
+
+You can clone an existing sample repository [config-service-resources](https://github.com/rslakra/config-service-resources.git)
 
 E.g.
 
