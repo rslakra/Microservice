@@ -1,0 +1,3 @@
+[submodule "config-service-resources"]
+	path = config-service-resources
+	url = git@github.com:rslakra/config-service-resources.git
