@@ -29,7 +29,7 @@
             <column name="sku" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="imageUrl" type="varchar(256)"/>
+            <column name="image_url" type="varchar(256)"/>
             <column name="created_on" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -49,6 +49,14 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <!-- Rename imageUrl to image_url if it exists (migration for existing databases) -->
+    <changeSet author="rslakra" id="rename_imageUrl_to_image_url">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="products" columnName="imageUrl"/>
+        </preConditions>
+        <renameColumn tableName="products" oldColumnName="imageUrl" newColumnName="image_url" columnDataType="varchar(256)"/>
     </changeSet>
 
 </databaseChangeLog>

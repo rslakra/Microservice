@@ -1,20 +1,29 @@
 package com.rslakra.microservice.eurekaservice;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Rohtash Lakra
  * @created 1/21/21 3:41 PM
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = {
+    "spring.cloud.config.enabled=false",
+    "spring.cloud.config.import-check.enabled=false",
+    "eureka.client.register-with-eureka=false",
+    "eureka.client.fetch-registry=false",
+    "spring.cloud.compatibility-verifier.enabled=false"
+})
 public class EurekaServiceApplicationTest {
 
     @LocalServerPort
@@ -24,20 +33,12 @@ public class EurekaServiceApplicationTest {
     private TestRestTemplate restTemplate;
 
     /**
-     * Returns the <code>TestRestTemplate</code> object.
-     *
-     * @return
+     * Tests that the application context loads successfully.
      */
-    private TestRestTemplate getRestTemplate() {
-        return restTemplate;
-    }
-
-    /**
-     * @param endPoint
-     * @return
-     */
-    private final String toRequest(String endPoint) {
-        return "http://localhost:" + port + "/" + endPoint;
+    @Test
+    public void contextLoads() {
+        // Test passes if context loads without errors
+        assertNotNull(restTemplate);
     }
 
     /**
@@ -45,7 +46,10 @@ public class EurekaServiceApplicationTest {
      */
     @Test
     public void testStartEurekaService() {
-        ResponseEntity<String> response = getRestTemplate().getForEntity(toRequest("/eureka/apps"), String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(
+            "http://localhost:" + port + "/eureka/apps", 
+            String.class
+        );
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }

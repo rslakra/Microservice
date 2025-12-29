@@ -20,13 +20,24 @@ logging:
 
 # Eureka Client Settings
 server:
-  port: ${EUREKA_CLIENT_PORT:8416}
+  port: ${EUREKA_CLIENT_PORT:8162}
 
 #Spring Settings
 spring:
   application:
     # registry-client
     name: ${EUREKA_CLIENT_NAME:eureka-client}
+  cloud:
+    # Compatibility Check
+    # Note: Spring Boot 3.5.7 is not officially compatible with Spring Cloud 2024.0.0
+    # Spring Cloud 2024.0.0 supports Spring Boot 3.4.x
+    # Disabling compatibility check as a workaround. For production, consider using Spring Boot 3.4.7
+    compatibility-verifier:
+      enabled: false
+    # Disable config import check since eureka-client may not always use config server
+    config:
+      import-check:
+        enabled: false
 
 #cloud:
 #  config:
@@ -34,21 +45,21 @@ spring:
 #    discovery:
 #      enabled: true
 
-# http://localhost:8316/eureka/
 # Eureka/Registry Service Settings
+# Registry service port (default: 8761 - standard Eureka port)
 registry:
   service:
-    port: ${EUREKA_SERVICE_PORT:8316}
+    port: ${EUREKA_SERVICE_PORT:8761}
 
 ## Eureka Settings
 eureka:
   instance:
     hostname: ${EUREKA_CLIENT_HOSTNAME:localhost}
   client:
-    #    register-with-eureka: false
-    #    fetch-registry: false
-    registerWithEureka: true
-    fetchRegistry: true
+    # Register with Eureka server
+    register-with-eureka: true
+    # Fetch registry from Eureka server
+    fetch-registry: true
     service-url:
       # where defaultZone should hold the value of your Eureka/Registry Service.
       defaultZone: ${REGISTRY_SERVICE_URL:http://${eureka.instance.hostname}:${registry.service.port}/eureka/}

@@ -1,6 +1,8 @@
 package com.rslakra.microservice.productservice.service.impl;
 
 import com.rslakra.microservice.productservice.service.OrderService;
+import com.rslakra.microservice.productservice.service.event.CreateOrderEvent;
+import com.rslakra.microservice.productservice.service.event.EventType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,6 +33,24 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public void cancelOrder(Long orderId) {
+
+    }
+
+    /**
+     * @param createOrderEvent
+     */
+    @Override
+    public void handleEvent(CreateOrderEvent createOrderEvent) {
+
+    }
+
+    /**
+     * Handles the event.
+     *
+     * @param eventType
+     */
+    @Override
+    public void handleEvent(EventType eventType) {
 
     }
 }

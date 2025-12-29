@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/layout}">
+
+<th:block th:fragment="content">
+    <div class="content-card">
+        <div class="card-header">
+            <h2>All Products</h2>
+            <a th:href="@{/products/new}" class="btn btn-primary">+ New Product</a>
+        </div>
+
+        <div th:if="${products != null and !products.isEmpty()}">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>SKU</th>
+                        <th>ISBN</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.id}">1</td>
+                        <td th:text="${product.name}">Product Name</td>
+                        <td th:text="${product.brand ?: 'N/A'}">Brand</td>
+                        <td th:text="${product.sku}">SKU-001</td>
+                        <td th:text="${product.isbn}">ISBN-001</td>
+                        <td class="description-cell" th:text="${product.description ?: 'No description'}">Description
+                        </td>
+                        <td class="actions-cell">
+                            <a th:href="@{/products/{id}/edit(id=${product.id})}" class="btn btn-sm btn-edit">Edit</a>
+                            <form th:action="@{/products/{id}/delete(id=${product.id})}" method="post"
+                                class="delete-form"
+                                onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                <button type="submit" class="btn btn-sm btn-delete">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${products == null or products.isEmpty()}" class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <h3>No Products Found</h3>
+            <p>Get started by creating your first product.</p>
+            <a th:href="@{/products/new}" class="btn btn-primary">Create Product</a>
+        </div>
+    </div>
+</th:block>
+
+</html>

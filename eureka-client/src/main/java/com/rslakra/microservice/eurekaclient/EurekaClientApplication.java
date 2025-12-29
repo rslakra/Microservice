@@ -2,6 +2,7 @@ package com.rslakra.microservice.eurekaclient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * A client that both registers itself with the registry and uses the Spring Cloud DiscoveryClient abstraction to
@@ -12,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Rohtash Lakra
  * @created 1/21/21 3:21 PM
  */
-//@EnableDiscoveryClient
+@EnableDiscoveryClient
 @SpringBootApplication
 public class EurekaClientApplication {
 

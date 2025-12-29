@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle} + ' - Admin'">Admin - Product Service</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+    <div class="admin-container">
+        <!-- Header Fragment -->
+        <div th:replace="~{fragments/base :: header(${headerTitle}, ${headerSubtitle})}"></div>
+
+        <!-- Navigation Fragment -->
+        <div th:replace="~{fragments/base :: navigation(${activeNav})}"></div>
+
+        <!-- Alert Messages Fragment -->
+        <div th:replace="~{fragments/base :: alerts}"></div>
+
+        <!-- Page Content -->
+        <div class="admin-content" th:insert="~{::content}">
+            <!-- Content will be inserted here -->
+        </div>
+    </div>
+</body>
+
+</html>

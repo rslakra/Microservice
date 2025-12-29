@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Product Client</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛍️ Product Catalog</h1>
+            <p>Browse our collection of products</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Products</h3>
+                <div class="value" th:text="${productCount}">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Status</h3>
+                <div class="value" style="font-size: 1.5em; color: #4caf50;" th:if="${error == null}">✓ Active</div>
+                <div class="value" style="font-size: 1.5em; color: #f44336;" th:if="${error != null}">✗ Error</div>
+            </div>
+        </div>
+
+        <div th:if="${error}" class="error-message">
+            <strong>Error:</strong> <span th:text="${error}"></span>
+        </div>
+
+        <div th:if="${products != null and !products.isEmpty()}">
+            <div class="products-grid">
+                <div class="product-card" th:each="product : ${products}">
+                    <img th:if="${product.imageUrl != null and !product.imageUrl.isEmpty()}"
+                        th:src="${product.imageUrl}" alt="Product Image" class="product-image"
+                        onerror="this.style.display='none'">
+                    <div th:if="${product.imageUrl == null or product.imageUrl.isEmpty()}"
+                        class="product-image product-image-placeholder">
+                        📦
+                    </div>
+                    <div class="product-name" th:text="${product.name != null ? product.name : 'Unnamed Product'}">
+                        Product Name</div>
+                    <div class="product-brand" th:text="${product.brand != null ? product.brand : 'No Brand'}">Brand
+                    </div>
+                    <div class="product-description"
+                        th:text="${product.description != null ? product.description : 'No description available.'}">
+                        Product description goes here...
+                    </div>
+                    <div class="product-details">
+                        <div class="product-detail" th:if="${product.sku != null and !product.sku.isEmpty()}">
+                            <span class="product-detail-label">SKU:</span>
+                            <span class="product-detail-value" th:text="${product.sku}">SKU-123</span>
+                        </div>
+                        <div class="product-detail" th:if="${product.isbn != null and !product.isbn.isEmpty()}">
+                            <span class="product-detail-label">ISBN:</span>
+                            <span class="product-detail-value" th:text="${product.isbn}">ISBN-123</span>
+                        </div>
+                        <div class="product-detail" th:if="${product.id != null}">
+                            <span class="product-detail-label">ID:</span>
+                            <span class="product-detail-value" th:text="${product.id}">123</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${products == null or products.isEmpty()}" class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <h2>No Products Available</h2>
+            <p>There are currently no products in the catalog.</p>
+        </div>
+    </div>
+</body>
+
+</html>
