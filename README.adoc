@@ -1,0 +1,415 @@
+:toc:
+:toclevels: 3
+:icons: font
+:source-highlighter: prettify
+:project_id: microservice
+
+= Microservice
+
+This repository contains all the projects categorized based on the modules and learning purposes.
+
+These projects should have the basic and core implementations which can be used by other projects.
+It might be some of them use any third party library, so the source code available in this repository will be available
+for AS IT IS usage.
+
+== Folder Structure
+
+[source,text]
+----
+    /
+    ├── api-gateway-service         # The API Gateway Project
+    ├── common-service              # The Common Service Project
+    ├── config-client               # The Config Client Project
+    ├── config-service              # The Config Service Project
+    ├── eureka-client               # The Eureka/Registry Client Project
+    ├── eureka-service              # The Eureka/Registry Server Project
+    ├── product-client              # The Product Client Project
+    ├── product-service             # The Product Service Project
+    └── README.md
+----
+
+== Technology Stack
+
+* **Spring Boot**: 3.5.7
+* **Spring Cloud**: 2024.0.0
+* **Java**: 21
+* **Spring Cloud Config**: Centralized configuration management
+* **Netflix Eureka**: Service discovery and registration
+* **Spring Cloud Gateway**: API Gateway (replacing deprecated Netflix Zuul)
+* **Spring Data JPA**: Database persistence
+* **H2 Database**: In-memory database
+* **Liquibase**: Database migration tool
+* **Thymeleaf**: Server-side templating
+
+[NOTE]
+====
+Spring Boot 3.5.7 is not officially compatible with Spring Cloud 2024.0.0 (which supports Spring Boot 3.4.x). 
+The compatibility verifier has been disabled as a workaround. For production, consider using Spring Boot 3.4.7.
+====
+
+== Service Dependencies and Startup Order
+
+The services must be started in the following order due to their dependencies:
+
+=== 1. Eureka Service (No Dependencies)
+
+**Port**: 8761  
+**Service Name**: eureka-service  
+**Description**: Service discovery and registration server. All other services depend on this.
+
+[source,bash]
+----
+cd eureka-service
+./buildMaven.sh
+./runMaven.sh
+----
+
+**Dashboard**: http://localhost:8761/  
+**For more details**: See link:eureka-service/README.md[eureka-service/README.md]
+
+=== 2. Config Service (Depends on: Eureka Service)
+
+**Port**: 8116  
+**Service Name**: config-service  
+**Description**: Centralized configuration management server.
+
+[source,bash]
+----
+cd config-service
+./buildMaven.sh
+./runMaven.sh
+----
+
+**URL**: http://localhost:8116/  
+**For more details**: See link:config-service/README.md[config-service/README.md]
+
+=== 3. Config Client (Depends on: Eureka Service, Config Service)
+
+**Port**: 8016  
+**Service Name**: config-client  
+**Description**: Client application that consumes configuration from Config Server.
+
+[source,bash]
+----
+cd config-client
+./buildMaven.sh
+./runMaven.sh
+----
+
+**URL**: http://localhost:8016/  
+**For more details**: See link:config-client/README.md[config-client/README.md]
+
+=== 4. API Gateway Service (Depends on: Eureka Service)
+
+**Port**: 8763  
+**Service Name**: api-gateway-service  
+**Description**: API Gateway that routes requests to backend services.
+
+[source,bash]
+----
+cd api-gateway-service
+./buildMaven.sh
+./runMaven.sh
+----
+
+**URL**: http://localhost:8763/  
+**For more details**: See link:api-gateway-service/README.md[api-gateway-service/README.md]
+
+=== 5. Product Service (Depends on: Eureka Service)
+
+**Port**: 8084  
+**Service Name**: product-service  
+**Description**: Product management service with REST API and admin UI.
+
+[source,bash]
+----
+cd product-service
+./buildMaven.sh
+./runMaven.sh
+----
+
+**URL**: http://localhost:8084/product-service  
+**For more details**: See link:product-service/README.md[product-service/README.md]
+
+=== 6. Product Client (Depends on: Eureka Service, API Gateway Service, Product Service)
+
+**Port**: 8085  
+**Service Name**: product-client  
+**Description**: Client application for displaying products.
+
+[source,bash]
+----
+cd product-client
+./buildMaven.sh
+./runMaven.sh
+----
+
+**URL**: http://localhost:8085/product-client  
+**For more details**: See link:product-client/README.md[product-client/README.md]
+
+=== 7. Eureka Client (Depends on: Eureka Service)
+
+**Port**: 8162  
+**Service Name**: eureka-client  
+**Description**: Eureka client application for service discovery demonstration.
+
+[source,bash]
+----
+cd eureka-client
+./buildMaven.sh
+./runMaven.sh
+----
+
+**URL**: http://localhost:8162/  
+**For more details**: See link:eureka-client/README.md[eureka-client/README.md]
+
+=== 8. Common Service (No Runtime Dependencies)
+
+**Description**: Shared library/service providing common utilities and components.
+
+[source,bash]
+----
+cd common-service
+./buildMaven.sh
+# Can be included as a dependency in other services
+----
+
+**For more details**: See link:common-service/README.md[common-service/README.md]
+
+== Quick Start Guide
+
+=== Complete Startup Sequence
+
+[source,bash]
+----
+# 1. Start Eureka Service (required by all)
+cd eureka-service
+./buildMaven.sh && ./runMaven.sh
+
+# 2. Start Config Service (optional, but recommended)
+cd ../config-service
+./buildMaven.sh && ./runMaven.sh
+
+# 3. Start Config Client (optional)
+cd ../config-client
+./buildMaven.sh && ./runMaven.sh
+
+# 4. Start API Gateway
+cd ../api-gateway-service
+./buildMaven.sh && ./runMaven.sh
+
+# 5. Start Product Service
+cd ../product-service
+./buildMaven.sh && ./runMaven.sh
+
+# 6. Start Product Client
+cd ../product-client
+./buildMaven.sh && ./runMaven.sh
+----
+
+== Prerequisites
+
+What things you need to install the software and how to install them:
+
+=== Check Java Installation
+
+Check if you already have Java or not. If not, install Java `21` version.
+
+[source,bash]
+----
+java -version
+----
+
+=== Check Maven Installation
+
+Now, check if you already have Maven or not. If not, install Maven `3.6.0` or latest version.
+
+[source,bash]
+----
+mvn --version
+----
+
+=== IDE Setup
+
+Next, make sure you have an IDE either Eclipse or IntelliJ.
+
+== How to Set Up
+
+You should have GIT account to check out the code.
+
+=== 1. Clone the Repository
+
+Open terminal and go to your workspace. Then run the following command to check out the source code.
+
+[source,bash]
+----
+git clone https://github.com/rslakra/Microservice.git
+----
+
+=== 2. Build the Project
+
+[source,bash]
+----
+cd Microservice
+./buildMaven.sh
+----
+
+=== 3. Run the Program
+
+Run the program with the following command:
+
+[source,bash]
+----
+./run.sh
+----
+
+If you are missing either any of the above-mentioned steps or software, please follow the following `Installing` section.
+
+== Installing
+
+A step by step series of examples that tell you how to get a development environment running on your local machine.
+
+The following URLs will help you to download and install the required software.
+Please follow the instructions and download the latest stable version, as supported by your OS version.
+
+* link:https://openjdk.org/projects/jdk/21/[Open JDK 21] - Open JDK 21 Development Kit
+* link:https://formulae.brew.sh/formula/openjdk@21[Brew JDK 21] - Brew Formula Open JDK 21 Development Kit
+* link:https://www.oracle.com/java/technologies/downloads/#java21-mac[Oracle JDK 21] - Oracle JDK 21 Development Kit
+* link:https://maven.apache.org/download.cgi[Maven] - Apache Maven
+* link:https://www.jetbrains.com/idea/download/#section=mac[IntelliJ IDEA] - Download IntelliJ IDEA
+* link:https://www.eclipse.org/downloads/[Eclipse] - Eclipse IDE 2019‑09
+* link:https://tomcat.apache.org/download-90.cgi[Tomcat] - Apache Tomcat® 9.x
+
+=== Deployment
+
+Once you have installed all the above-mentioned software, then you are ready to run the code on your local machine.
+
+== Service Details
+
+Each service has its own detailed README with comprehensive information. Click on the links below for more details:
+
+=== Eureka Service
+
+Service discovery and registration server. All microservices register with Eureka to enable service discovery.
+
+* **Port**: 8761
+* **Dashboard**: http://localhost:8761/
+* **Dependencies**: None (must start first)
+* **Documentation**: link:eureka-service/README.md[eureka-service/README.md]
+
+=== Config Service
+
+Centralized configuration management server using Spring Cloud Config Server.
+
+* **Port**: 8116
+* **URL**: http://localhost:8116/
+* **Dependencies**: Eureka Service
+* **Git Repository**: `${HOME}/Downloads/AppData/ConfigService`
+* **Documentation**: link:config-service/README.md[config-service/README.md]
+
+=== Config Client
+
+Client application that consumes configuration from Config Server and supports dynamic configuration refresh.
+
+* **Port**: 8016
+* **URL**: http://localhost:8016/
+* **Dependencies**: Eureka Service, Config Service
+* **Documentation**: link:config-client/README.md[config-client/README.md]
+
+=== API Gateway Service
+
+API Gateway using Spring Cloud Gateway (replacing deprecated Netflix Zuul) that routes requests to backend services.
+
+* **Port**: 8763
+* **URL**: http://localhost:8763/
+* **Dependencies**: Eureka Service
+* **Features**: Service discovery, load balancing, dynamic routing
+* **Documentation**: link:api-gateway-service/README.md[api-gateway-service/README.md]
+
+=== Product Service
+
+Product management service providing REST API and admin UI for managing products.
+
+* **Port**: 8084
+* **Context Path**: /product-service
+* **URL**: http://localhost:8084/product-service
+* **Dependencies**: Eureka Service
+* **Database**: H2 (file-based at `~/Downloads/H2DB/ProductService`)
+* **Features**: CRUD operations, CSV import/export, Admin UI
+* **Documentation**: link:product-service/README.md[product-service/README.md]
+
+=== Product Client
+
+Client application for displaying products, routes requests through API Gateway.
+
+* **Port**: 8085
+* **Context Path**: /product-client
+* **URL**: http://localhost:8085/product-client
+* **Dependencies**: Eureka Service, API Gateway Service, Product Service
+* **Documentation**: link:product-client/README.md[product-client/README.md]
+
+=== Eureka Client
+
+Eureka client application for service discovery demonstration.
+
+* **Port**: 8162
+* **URL**: http://localhost:8162/
+* **Dependencies**: Eureka Service
+* **Documentation**: link:eureka-client/README.md[eureka-client/README.md]
+
+=== Common Service
+
+Shared library/service providing common utilities and components for microservices.
+
+* **Type**: Library/Shared Service
+* **Dependencies**: None (can be included as dependency)
+* **Documentation**: link:common-service/README.md[common-service/README.md]
+
+== Spring Boot 3.x Migration Notes
+
+=== Key Changes from Spring Boot 2.x
+
+1. **Bootstrap Phase Removed**: The bootstrap context has been removed. Use `spring.config.import` instead of `bootstrap.properties`
+2. **Profile Configuration**: Use `spring.config.activate.on-profile` instead of `spring.profiles` in YAML files
+3. **Jakarta EE**: All `javax.*` packages have been migrated to `jakarta.*`
+4. **Spring Cloud Gateway**: Replaced deprecated Netflix Zuul with Spring Cloud Gateway
+5. **Native Profile Support**: The native profile is fully supported for file-based configuration without Git
+
+=== Compatibility Note
+
+This project uses Spring Boot 3.5.7 with Spring Cloud 2024.0.0. While not officially compatible (Spring Cloud 2024.0.0 supports Spring Boot 3.4.x), 
+the compatibility verifier has been disabled to allow the upgrade. For production environments, consider using Spring Boot 3.4.7 for full compatibility.
+
+== Pipeline
+
+[![Pipeline Status][status-image]][status-url]
+
+[status-image]: AppSuite/badges/master/pipeline.svg
+
+[status-url]: AppSuite/badges/master/pipeline.svg
+
+== Contributing
+
+Please read link:https://github.com/rslakra/AppSuite/blob/master/CONTRIBUTING.md[CONTRIBUTING.md] for details on our code
+of conduct, and the process for submitting pull requests to us.
+
+== Authors
+
+* link:https://github.com/rslakra[Rohtash Lakra]
+* link:https://github.com/rslakra/Microservice.git[Microservice]
+
+See also the list of link:https://github.com/rslakra/AppSuite/contributors[contributors] who participated in this project.
+
+== License
+
+This project is licensed under the Apache License - see the link:https://github.com/rslakra/AppSuite/LICENSE.md[LICENSE.md]
+file for details
+
+== Reference
+
+* link:https://github.com/cockroachdb/university-event-driven-architecture-for-java-developers-app-exercises[university-event-driven-architecture-for-java-developers-app-exercises]
+* link:https://docs.spring.io/spring-cloud-config/docs/current/reference/html[Spring Cloud Config]
+* link:https://docs.spring.io/spring-boot/docs/current/reference/html/upgrading.html[Spring Boot 3.x Migration Guide]
+* link:https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2024.0-Release-Notes[Spring Cloud 2024.0.0 Release Notes]
+* link:https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot]
+* link:https://spring.io/guides/gs/multi-module/[Creating a Multi Module Project]
