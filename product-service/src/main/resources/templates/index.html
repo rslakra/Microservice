@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/layout}">
+
+<th:block th:fragment="content">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-content">
+                <h3>Total Products</h3>
+                <div class="stat-value" th:text="${productCount}">0</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-content">
+                <h3>Quick Actions</h3>
+                <div class="stat-value" style="font-size: 1.2em;">
+                    <a th:href="@{/products/new}" class="btn btn-primary">Add Product</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-card">
+        <h2>Recent Products</h2>
+        <div th:if="${products != null and !products.isEmpty()}">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>SKU</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${products}" th:if="${productCount <= 10}">
+                        <td th:text="${product.id}">1</td>
+                        <td th:text="${product.name}">Product Name</td>
+                        <td th:text="${product.brand ?: 'N/A'}">Brand</td>
+                        <td th:text="${product.sku}">SKU-001</td>
+                        <td>
+                            <a th:href="@{/products/{id}/edit(id=${product.id})}" class="btn btn-sm btn-edit">Edit</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:if="${productCount > 10}" class="text-center" style="margin-top: 20px;">
+                <a th:href="@{/products}" class="btn btn-primary">View All Products</a>
+            </div>
+        </div>
+        <div th:if="${products == null or products.isEmpty()}" class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <h3>No Products Yet</h3>
+            <p>Get started by creating your first product.</p>
+            <a th:href="@{/products/new}" class="btn btn-primary">Create Product</a>
+        </div>
+    </div>
+</th:block>
+
+</html>

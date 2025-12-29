@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.cloud.config.server.environment.EnvironmentController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +31,17 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-//@RunWith(SpringRunner.class)
-@SpringBootTest(properties = {"spring.profiles.active=native"})
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = {
+        "spring.profiles.active=native",
+        "spring.cloud.config.enabled=true",
+        "spring.cloud.config.import-check.enabled=false",
+        "eureka.client.enabled=false",
+        "spring.cloud.compatibility-verifier.enabled=false",
+        "spring.cloud.config.server.native.searchLocations=file:../config-service-resources"
+    }
+)
 public class ConfigServiceApplicationTest {
 
     @Autowired

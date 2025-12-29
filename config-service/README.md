@@ -2,6 +2,35 @@
 
 This guide walks you through the process of standing up, and consuming configuration from, the [Spring Cloud Config Server](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html)
 
+## Technology Stack
+
+- **Spring Boot**: 3.5.7
+- **Spring Cloud**: 2024.0.0
+- **Java**: 21
+- **Spring Cloud Config Server**: Provides centralized configuration management
+- **Netflix Eureka Client**: Service discovery and registration
+
+> **Note**: Spring Boot 3.5.7 is not officially compatible with Spring Cloud 2024.0.0 (which supports Spring Boot 3.4.x). The compatibility verifier has been disabled as a workaround. For production, consider using Spring Boot 3.4.7.
+
+## Service Dependencies
+
+- **eureka-service** (required) - Must be running for service registration
+
+## Startup Order
+
+**2. Start after eureka-service**
+
+```bash
+# 1. First start eureka-service
+cd ../eureka-service
+./buildMaven.sh && ./runMaven.sh
+
+# 2. Then start config-service
+cd ../config-service
+./buildMaven.sh
+./runMaven.sh
+```
+
 ## What you'll build
 
 You'll set-up a [Config Server](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) and then build a client that consumes the configuration on startup and then ```_refreshes_``` the configuration without restarting the client.
@@ -12,45 +41,15 @@ You'll set-up a [Config Server](http://cloud.spring.io/spring-cloud-config/sprin
 - [prereq_editor_jdk_buildtools](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc)
 - [how_to_complete_this_guide](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc)
 
-## Build with Gradle
+## Configuration
 
-- [build_system_intro](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_system_intro.adoc)
-- [create_directory_structure_hello](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/create_directory_structure_hello.adoc)
-- [create_both_builds](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/create_both_builds.adoc)
-
-`config-service/build.gradle`
-
-AsciiDoc source formatting doesn't support groovy, so using java instead
-----
-- [build.gradle](https://raw.githubusercontent.com/spring-guides/{project_id}/master/initial/config-service/build.gradle)
-----
-
-`config-client/build.gradle`
-
-AsciiDoc source formatting doesn't support groovy, so using java instead
-----
-- [build.gradle](https://raw.githubusercontent.com/spring-guides/{project_id}/master/initial/config-client/build.gradle)
-----
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/spring-boot-gradle-plugin.adoc[]
-
-# Build with Maven
-
-- [build_system_intro_maven](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_system_intro_maven.adoc)
-- [create_directory_structure_hello](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/create_directory_structure_hello.adoc)
-
-To get you started quickly, here are the complete configurations for the server and client applications:
-
-`config-service/pom.xml`
-----
-- [Maven config-service](https://raw.githubusercontent.com/spring-guides/{project_id}/master/initial/config-service/pom.xml)
-----
-
-- [spring-boot-maven-plugin](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/spring-boot-maven-plugin.adoc)
-- [hide-show-sts](https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-sts.adoc)
-
+- **Default Port**: 8116
+- **Service Name**: config-service
+- **Config Server URL**: http://localhost:8116/
+- **Eureka Registration**: Registered with eureka-service at http://localhost:8761/
 
 ## Stand up a Config Server
+
 You'll first need a Config Service to act as a sort of intermediary between your Spring applications and a typically version-controlled repository of configuration files. You can use Spring Cloud's `@EnableConfigServer` to stand up a config server that other applications can talk to. This is a regular Spring Boot application with one annotation added to _enable_ the config server.
 
 `com/rslakra/microservice/configservice/ConfigServiceApplication.java`
@@ -76,6 +75,13 @@ Make sure to also specify a different `server.port` value to avoid port conflict
 - [application.properties](config-service/src/main/resources/application.properties)
 ----
 
+### Configuration Options
+
+The Config Server supports multiple backend storage options:
+
+1. **Git Repository** (default): Configure `spring.cloud.config.server.git.uri` to point to a Git repository
+2. **Native Profile**: Use `spring.profiles.active=native` with `spring.cloud.config.server.native.searchLocations` for file-based configuration (useful for testing)
+
 In this example we are using a file-based git repository at `${HOME}/Downloads/AppData/ConfigService`.
 You can create one easily by making a new directory and git committing properties and YAML files to it.
 
@@ -95,60 +101,21 @@ find .
 
 Or you could use a remote git repository, e.g. on github, if you change the configuration file in the application to point to that instead.
 
+## Spring Boot 3.x Migration Notes
 
-## Reading Configuration from the Config Server using the Config Client
+### Key Changes from Spring Boot 2.x
 
-Now that we've stood up a Config Server, let's stand up a new Spring Boot application that uses the Config Server to load its own configuration and that `_refreshes_` its  configuration to reflect changes to the Config Server on-demand, without restarting the JVM. Add the `org.springframework.cloud:spring-cloud-starter-config` dependency in order to connect to the Config Server. 
-Spring will see the configuration property files just like it would any property file loaded from `application.properties` or `application.yml` or any other `PropertySource`.
+1. **Bootstrap Phase Removed**: The bootstrap context has been removed. Use `spring.config.import` instead of `bootstrap.properties`
+2. **Profile Configuration**: Use `spring.config.activate.on-profile` instead of `spring.profiles` in YAML files
+3. **Jakarta EE**: All `javax.*` packages have been migrated to `jakarta.*`
+4. **Native Profile Support**: The native profile is fully supported for file-based configuration without Git
 
-The properties to configure the  Config Client must necessarily be read in `_before_` the rest of the application's configuration is read from the Config Server, during the _bootstrap_ phase. Specify the client's `spring.application.name` as `config-client` and the location of the Config Server `spring.cloud.config.uri` in `config-client/src/main/resources/bootstrap.properties`, where it will be loaded earlier than any other configuration.
+### Compatibility Note
 
-
-`config-client/src/main/resources/bootstrap.properties`
-[source,java]
-----
-- [bootstrap.properties](config-client/src/main/resources/bootstrap.properties)
-----
-
-We also want to enable the `/refresh` endpoint so that we can demonstrate dynamic configuration changes:
-
-`config-client/src/main/resources/application.properties`
-[source,java]
-----
-- [application.properties](config-client/src/main/resources/application.properties)
-----
-
-The client may access any value in the Config Server using the traditional mechanisms (e.g. `@ConfigurationProperties`, `@Value("${...}")` or through the `Environment` abstraction). Create a Spring MVC REST controller that returns the resolved `message` property's value. Consult the [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/) guide to learn more about building REST services with Spring MVC and Spring Boot.
-
-By default, the configuration values are read on the client's startup, and not again. You can force a bean to `_refresh_` its configuration - to pull updated values from the Config Server - by annotating the `MessageRestController` with the Spring Cloud Config `@RefreshScope` and then by triggering a `_refresh_` event.
-
-`config-client/src/main/java/com/rslakra/microservices/configclient/ConfigClientApplication.java`
-[source,java]
-----
-- [ConfigClientApplication](config-client/src/main/java/com/rslakra/microservices/configclient/ConfigClientApplication.java)
-----
-
-## Test the application
-
-Test the end-to-end result by starting the Config Service first and then, once loaded, starting the client.
-Visit the client app in the browser, `http://localhost:8080/message`. There, you should see the String `Hello Lakra` reflected in the response.
-
-Change the `message` key in the `config-client.properties` file in the Git repository to something different (`Hello Git Config!`, perhaps?).
-You can confirm that the Config Server sees the change by visiting `http://localhost:8888/config-client/default`. 
-You need to invoke the `refresh` Spring Boot Actuator endpoint in order to force the client to refresh itself and draw the new value in. 
-**Spring Boot's Actuator** exposes operational endpoints, like health checks and environment information, about an application. 
-In order to use it you must add `org.springframework.boot:spring-boot-starter-actuator` to the client app's CLASSPATH. You can invoke the  `refresh` Actuator endpoint by sending an empty HTTP `POST` to the client's `refresh` endpoint, `http://localhost:8080/actuator/refresh`, and then confirm it worked by reviewing the `http://localhost:8080/message` endpoint.
-
-```shell
-curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
-```
-
-NOTE: we set `management.endpoints.web.exposure.include=*` in the client app to make this easy to test (by default since Spring Boot 2.0 the Actuator endpoints are not exposed by default). 
-By default you can still access them over JMX if you don't set the flag.
-
+This service uses Spring Boot 3.5.7 with Spring Cloud 2024.0.0. While not officially compatible (Spring Cloud 2024.0.0 supports Spring Boot 3.4.x), the compatibility verifier has been disabled to allow the upgrade. For production environments, consider using Spring Boot 3.4.7 for full compatibility.
 
 ## Summary
-Congratulations! You've just used Spring to centralize configuration for all your services by first standing up a  and to then dynamically update configuration.
+Congratulations! You've just used Spring to centralize configuration for all your services by first standing up a Config Server and then dynamically updating configuration without restarting your applications.
 
 ## See Also
 
@@ -163,3 +130,10 @@ The following guides may also be helpful:
 
 *  [university-event-driven-architecture-for-java-developers-app-exercises](https://github.com/cockroachdb/university-event-driven-architecture-for-java-developers-app-exercises)
 * [Spring Cloud Config](https://docs.spring.io/spring-cloud-config/docs/current/reference/html)
+* [Spring Boot 3.x Migration Guide](https://docs.spring.io/spring-boot/docs/current/reference/html/upgrading.html)
+* [Spring Cloud 2024.0.0 Release Notes](https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2024.0-Release-Notes)
+
+# Author
+
+- Rohtash Lakra
+

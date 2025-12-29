@@ -36,7 +36,9 @@ spring:
 
 ---
 spring:
-  profiles: cloud
+  config:
+    activate:
+      on-profile: cloud
 eureka:
   password: password
   instance:

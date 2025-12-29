@@ -18,9 +18,10 @@ package com.rslakra.microservice.productservice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.rslakra.microservice.productservice.controller.ProductController;
+import com.rslakra.microservice.productservice.controller.rest.ProductController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 //@RunWith(SpringRunner.class)
@@ -28,6 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ProductServiceApplicationTest {
 
     @Autowired
+    @Qualifier("productRestController")
     private ProductController controller;
 
     @Test

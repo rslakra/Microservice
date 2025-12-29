@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.18</version>
+        <version>3.5.7</version>
         <!-- lookup parent from repository -->
         <relativePath/>
     </parent>
@@ -43,22 +43,20 @@
         <checkstyle.threshold>0</checkstyle.threshold>
 
         <!-- slf4j -->
-        <slf4j-api.version>2.0.12</slf4j-api.version>
-        <logback-classic.version>1.5.1</logback-classic.version>
+        <slf4j-api.version>2.0.16</slf4j-api.version>
+        <logback-classic.version>1.5.14</logback-classic.version>
 
         <!-- lombok -->
-        <lombok.version>1.18.34</lombok.version>
+        <lombok.version>1.18.36</lombok.version>
 
         <!-- swagger -->
         <swagger.skip>false</swagger.skip>
 
         <!-- spring-cloud -->
-        <spring-cloud.version>2021.0.4</spring-cloud.version>
-        <!-- spring-cloud -->
-        <netflix-zuul.version>2.2.10.RELEASE</netflix-zuul.version>
+        <spring-cloud.version>2024.0.0</spring-cloud.version>
 
         <!-- junit-jupiter-params -->
-        <junit-jupiter-params.version>5.9.2</junit-jupiter-params.version>
+        <junit-jupiter-params.version>5.11.4</junit-jupiter-params.version>
 
     </properties>
 

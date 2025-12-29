@@ -1,34 +1,47 @@
 #!/bin/bash
 # Author: Rohtash Lakra
-clear
-VERSION="0.0"
-# Build Version Function
-function buildVersion() {
-  GIT_COMMIT_COUNT=$(git rev-list HEAD --count)
-  if [ $? -ne 0 ]; then
-    VERSION="${VERSION}.0"
-  else
-    VERSION="${VERSION}.${GIT_COMMIT_COUNT}"
-  fi
-  SNAPSHOT="${SNAPSHOT:-$!}"
-  if [[ ! -z ${SNAPSHOT} ]]; then
-      VERSION="${VERSION}-SNAPSHOT"
-  fi
+# Source common version function
+set -e  # Exit on error
 
-  echo "${VERSION}";
-}
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERSION_SCRIPT="${SCRIPT_DIR}/../version.sh"
+
+# Check if version.sh exists and source it
+if [ ! -f "${VERSION_SCRIPT}" ]; then
+    echo "Error: version.sh not found at ${VERSION_SCRIPT}"
+    exit 1
+fi
+
+source "${VERSION_SCRIPT}"
+
+# Verify buildVersion function is available
+if ! type buildVersion &>/dev/null; then
+    echo "Error: buildVersion function not found in version.sh"
+    exit 1
+fi
 
 echo
-#JAVA_VERSION=21
+#JAVA_VERSION=11
 #export JAVA_HOME=$(/usr/libexec/java_home -v $JAVA_VERSION)
-echo "${JAVA_HOME}"
+echo "JAVA_HOME: ${JAVA_HOME}"
 echo
-#mvn clean install -DskipTests=true
+
+# Build versions using version.sh
 SNAPSHOT_VERSION=$(buildVersion SNAPSHOT)
 RELEASE_VERSION=$(buildVersion)
-#echo "RELEASE_VERSION: ${RELEASE_VERSION}, SNAPSHOT_VERSION: ${SNAPSHOT_VERSION}"
-#mvn clean install -DskipTests=true -DprojectVersion=$RELEASE_VERSION
+
+echo "SNAPSHOT_VERSION: ${SNAPSHOT_VERSION}"
+echo "RELEASE_VERSION: ${RELEASE_VERSION}"
+echo
+
+# Build with SNAPSHOT version
+echo "Building with SNAPSHOT version: ${SNAPSHOT_VERSION}"
 mvn clean install -Drevision=$SNAPSHOT_VERSION
+
+# Build with RELEASE version (skip tests)
+echo "Building with RELEASE version: ${RELEASE_VERSION} (skipping tests)"
 mvn install -Drevision=$RELEASE_VERSION -DskipTests=true
-#mvn clean install -DskipTests=true -DprojectVersion=$(./makeVersion.sh SNAPSHOT)
+
+echo
+echo "Build completed successfully!"
 echo

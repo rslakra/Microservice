@@ -4,9 +4,23 @@ spring:
   application:
     # eureka-service
     name: ${EUREKA_SERVICE_NAME:eureka-service}
+  cloud:
+    # Disable config import check since eureka-service is a server, not a client
+    config:
+      import-check:
+        enabled: false
 
 # Server Settings
 # The default port which eureka naming server
+server:
+  port: ${SERVER_PORT:8761}
+
+# Eureka Registry Service Port (used in defaultZone URL to avoid placeholder resolution timing issues)
+# This should match server.port for standalone Eureka server
+# Using a custom property instead of server.port to avoid Spring Boot 3.x initialization order issues
+eureka-service:
+  port: ${EUREKA_SERVICE_PORT:${SERVER_PORT:8761}}
+
 # Eureka Settings
 eureka:
   instance:
@@ -28,8 +42,10 @@ eureka:
       # any client that does not express a preference (in other words, it is a useful default).
       # where defaultZone should hold the value of your Eureka/Registry Service.
       # end point of load balancing server (registry service)
+      # Using eureka-service.port instead of server.port to avoid Spring Boot 3.x placeholder resolution timing issues
+      # In Spring Boot 3.x, Eureka parses this URL before server.port is resolved, causing URISyntaxException
       # defaultZone: http://admin:pwd@${eureka.instance.hostname}:${server.port}/eureka/
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${eureka.instance.hostname}:${eureka-service.port}/eureka/
 
 ---
 
@@ -61,3 +77,12 @@ eureka:
       # to instruct Go-Router where to route.
       cfAppGuid: ${EUREKA_SERVICE_HOSTNAME:localhost}
       cfInstanceIndex: ${INSTANCE_INDEX}
+
+# Compatibility Check
+# Note: Spring Boot 3.5.7 is not officially compatible with Spring Cloud 2024.0.0
+# Spring Cloud 2024.0.0 supports Spring Boot 3.4.x
+# Disabling compatibility check as a workaround. For production, consider using Spring Boot 3.4.7
+spring:
+  cloud:
+    compatibility-verifier:
+      enabled: false
