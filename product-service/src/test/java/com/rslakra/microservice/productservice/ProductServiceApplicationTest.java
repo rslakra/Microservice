@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
+<<<<<<<< HEAD:config-service/src/test/java/com/rslakra/microservice/configservice/ConfigServiceApplicationTest.java
+package com.rslakra.microservice.configservice;
+========
 package com.rslakra.microservice.productservice;
+>>>>>>>> develop:product-service/src/test/java/com/rslakra/microservice/productservice/ProductServiceApplicationTest.java
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.rslakra.microservice.productservice.controller.ProductController;
+import com.rslakra.microservice.productservice.controller.rest.ProductController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 //@RunWith(SpringRunner.class)
@@ -28,6 +33,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ProductServiceApplicationTest {
 
     @Autowired
+    @Qualifier("productRestController")
     private ProductController controller;
 
     @Test

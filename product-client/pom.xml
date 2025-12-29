@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.18</version>
+        <version>3.5.7</version>
         <!-- lookup parent from repository -->
         <relativePath/>
     </parent>
@@ -29,13 +29,13 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- java version -->
-        <java.version>11</java.version>
+        <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <!-- maven plugins -->
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-checkstyle-plugin.version>3.5.0</maven-checkstyle-plugin.version>
         <maven-release-plugin.version>3.0.0</maven-release-plugin.version>
 
         <!-- checkstyle -->
@@ -43,17 +43,17 @@
         <checkstyle.threshold>0</checkstyle.threshold>
 
         <!-- slf4j -->
-        <slf4j-api.version>2.0.12</slf4j-api.version>
-        <logback-classic.version>1.5.1</logback-classic.version>
+        <slf4j-api.version>2.0.16</slf4j-api.version>
+        <logback-classic.version>1.5.14</logback-classic.version>
 
         <!-- lombok -->
-        <lombok.version>1.18.30</lombok.version>
+        <lombok.version>1.18.36</lombok.version>
 
         <!-- spring-cloud -->
-        <spring-cloud.version>2021.0.4</spring-cloud.version>
+        <spring-cloud.version>2024.0.0</spring-cloud.version>
 
         <!-- junit-jupiter-params -->
-        <junit-jupiter-params.version>5.9.2</junit-jupiter-params.version>
+        <junit-jupiter-params.version>5.11.4</junit-jupiter-params.version>
 
     </properties>
 
@@ -74,6 +74,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
@@ -86,17 +90,22 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-ribbon -->
+        <!-- Spring Cloud LoadBalancer replaces Netflix Ribbon -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-            <version>2.2.10.RELEASE</version>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>4.1.0</version>
+        </dependency>
+
+        <!-- Netty native DNS resolver for macOS to avoid DNS resolution warnings -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <classifier>osx-aarch_64</classifier>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->

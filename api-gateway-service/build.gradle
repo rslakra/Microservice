@@ -1,19 +1,19 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.2'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'org.springframework.boot' version '3.5.7'
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
 }
 
 group 'com.rslakra.microservice.eurekaservice'
 version '1.0-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '21'
 
 repositories {
     mavenCentral()
 }
 
 ext {
-    set('springCloudVersion', "2020.0.0")
+    set('springCloudVersion', "2024.0.0")
 }
 
 

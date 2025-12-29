@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fragments</title>
+</head>
+
+<body>
+    <!-- Header Fragment -->
+    <div th:fragment="header(headerTitle, headerSubtitle)">
+        <div class="admin-header">
+            <h1 th:text="${headerTitle}">⚙️ Product Service Admin</h1>
+            <p th:text="${headerSubtitle}">Manage products, stock, and orders</p>
+        </div>
+    </div>
+
+    <!-- Navigation Fragment -->
+    <div th:fragment="navigation(activeNav)">
+        <div class="admin-nav">
+            <a th:href="@{/admin}" class="nav-link"
+                th:classappend="${activeNav == 'dashboard' ? 'active' : ''}">Dashboard</a>
+            <a th:href="@{/products}" class="nav-link"
+                th:classappend="${activeNav == 'products' ? 'active' : ''}">Products</a>
+            <a th:href="@{/products/new}" class="nav-link" th:classappend="${activeNav == 'new' ? 'active' : ''}">New
+                Product</a>
+            <a th:href="@{/products/upload}" class="nav-link"
+                th:classappend="${activeNav == 'upload' ? 'active' : ''}">Upload CSV</a>
+        </div>
+    </div>
+
+    <!-- Alert Messages Fragment -->
+    <div th:fragment="alerts">
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+    </div>
+</body>
+
+</html>
